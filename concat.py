@@ -2,7 +2,8 @@
 
 import pandas as pd
 import glob
-import inspect
+import os
+from typing import List, Optional
 
 
 def run(pattern: str = '*.csv', output: str = "delegado_partidario.csv", *, cwd: Optional[str] = None) -> pd.DataFrame:
@@ -26,12 +27,12 @@ def run(pattern: str = '*.csv', output: str = "delegado_partidario.csv", *, cwd:
 
 
 def list_csv_files(pattern: str = "*.csv") -> List[str]:
-    files = glob.glob("*.csv")
+    files = sorted(glob.glob("*.csv"))
     return files
 
 
-def read_csv_file(path: str, encoding: str = "latin1", sep=";") -> pd.DataFrame:
-    return pd.read_csv(path, encoding='latin1', sep=';')
+def read_csv_file(path: str, encoding: str = "latin1", sep=",") -> pd.DataFrame:
+    return pd.read_csv(path, encoding='latin1', sep=',')
 
 
 if __name__ == "__main__":

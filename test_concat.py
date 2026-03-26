@@ -9,9 +9,9 @@ from pathlib import Path
 def _write_csv(path, header, rows):
     path = Path(path)
     with path.open("w", encoding="latin1", newline='') as f:
-        f.write(';'.join(header) + "\n")
+        f.write(','.join(header) + "\n")
         for r in rows:
-            f.write(';'.join(r) + "\n")
+            f.write(','.join(r) + "\n")
 
 
 class ConcatScriptTest(unittest.TestCase):
@@ -31,15 +31,18 @@ class ConcatScriptTest(unittest.TestCase):
             _write_csv(p2, header, rows2)
 
             script_path = Path(__file__).parent / "concat.py"
-            self.assertTrue(script_path.exists(), f"concat.py not found at {script_path}")
+            self.assertTrue(script_path.exists(),
+                            f"concat.py not found at {script_path}")
 
-            subprocess.run([sys.executable, str(script_path)], cwd=tmpdir, check=True)
+            subprocess.run([sys.executable, str(script_path)],
+                           cwd=tmpdir, check=True)
 
             out = Path(tmpdir) / "delegado_partidario.csv"
-            self.assertTrue(out.exists(), "Output file delegado_partidario.csv was not created")
+            self.assertTrue(
+                out.exists(), "Output file delegado_partidario.csv was not created")
 
             with out.open("r", encoding="latin1", newline='') as f:
-                reader = csv.reader(f, delimiter=';')
+                reader = csv.reader(f, delimiter=',')
                 rows = list(reader)
 
             self.assertEqual(rows[0], header)
