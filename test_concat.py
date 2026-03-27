@@ -6,12 +6,12 @@ import csv
 from pathlib import Path
 
 
-def _write_csv(path, header, rows):
+def _write_csv(path, header, rows, sep=";"):
     path = Path(path)
     with path.open("w", encoding="latin1", newline='') as f:
-        f.write(','.join(header) + "\n")
+        f.write(sep.join(header) + "\n")
         for r in rows:
-            f.write(','.join(r) + "\n")
+            f.write(sep.join(r) + "\n")
 
 
 class ConcatScriptTest(unittest.TestCase):
@@ -42,7 +42,7 @@ class ConcatScriptTest(unittest.TestCase):
                 out.exists(), "Output file delegado_partidario.csv was not created")
 
             with out.open("r", encoding="latin1", newline='') as f:
-                reader = csv.reader(f, delimiter=',')
+                reader = csv.reader(f, delimiter=';')
                 rows = list(reader)
 
             self.assertEqual(rows[0], header)
